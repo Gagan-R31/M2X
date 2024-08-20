@@ -1,0 +1,39 @@
+name: Run Cloud Functions Script
+
+on:
+  push:
+    paths:
+      - 'cloud_functions/**'
+
+jobs:
+  run-script:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.9'
+
+      - name: Find changed folder and run script
+        run: |
+          # Find the directory that was changed
+          CHANGED_DIR=$(git diff --name-only HEAD^ HEAD | grep '^cloud_functions/' | cut -d '/' -f 2 | sort -u)
+          
+          if [ -z "$CHANGED_DIR" ]; then
+            echo "No changes detected in any cloud_functions subdirectory."
+            exit 0
+          fi
+
+          # Navigate to the changed directory and run the script
+          cd cloud_functions/$CHANGED_DIR
+          
+          # Install dependencies if requirements.txt exists
+          if [ -f "requirements.txt" ]; then
+            pip install -r requirements.txt
+          fi
+
+          # Run the Python script (assuming the main script is named main.py)
+          python main.py
