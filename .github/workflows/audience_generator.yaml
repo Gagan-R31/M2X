@@ -19,7 +19,7 @@ jobs:
 
       - name: Install dependencies
         run: |
-          cd cloud_functions
+          cd cloud_functions/audience_generator
           pip install -r requirements.txt
 
       - name: Run Python script
