@@ -3,7 +3,7 @@ name: Run Cloud Functions Script
 on:
   push:
     paths:
-      - 'cloud_functions/**'
+      - 'cloud_functions/audience_generator/**'
 
 jobs:
   run-script:
