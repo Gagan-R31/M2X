@@ -23,9 +23,13 @@ jobs:
         run: |
           # Get a list of all changed files
           CHANGED_FILES=$(git diff --name-only HEAD^ HEAD)
+          echo "Changed files:"
+          echo "$CHANGED_FILES"
           
           # Extract unique directories in the cloud_functions folder
           CHANGED_DIRS=$(echo "$CHANGED_FILES" | grep '^cloud_functions/' | cut -d '/' -f 2 | sort -u)
+          echo "Changed directories in cloud_functions:"
+          echo "$CHANGED_DIRS"
 
           if [ -z "$CHANGED_DIRS" ]; then
             echo "No changes detected in any cloud_functions subdirectory."
@@ -36,16 +40,20 @@ jobs:
             echo "Processing directory: cloud_functions/$DIR"
             cd cloud_functions/$DIR
             
-            # Install dependencies if requirements.txt exists
+            # Log the command being used to install dependencies
             if [ -f "requirements.txt" ]; then
+              echo "Running: pip install -r requirements.txt in cloud_functions/$DIR"
               pip install -r requirements.txt
+            else
+              echo "No requirements.txt found in cloud_functions/$DIR"
             fi
             
-            # Run the Python script (assuming the main script is named main.py)
+            # Log the command being used to run the script
             if [ -f "main.py" ]; then
+              echo "Running: python main.py in cloud_functions/$DIR"
               python main.py
             else
-              echo "No main.py script found in $DIR"
+              echo "No main.py script found in cloud_functions/$DIR"
             fi
 
             cd -  # Return to the previous directory
