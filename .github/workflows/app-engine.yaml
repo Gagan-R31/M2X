@@ -3,7 +3,7 @@ name: App Engine Deployment
 on:
   push:
     paths:
-      - 'app/**'
+      - 'app_engine/**'
 
 jobs:
   run-script:
