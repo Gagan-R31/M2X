@@ -26,20 +26,20 @@ jobs:
           echo "Changed files:"
           echo "$CHANGED_FILES"
 
-      - name: Check if requirements.in exists
+      - name: Install dependencies
         run: |
           if [ -f requirements.in ]; then
-            echo "requirements.in found."
             pip3 install -r requirements.in
           else
-            echo "requirements.in not found. Skipping dependency installation."
+            echo "requirements.in not found, exiting."
+            exit 1
           fi
 
-      - name: Check if deploy.sh exists and run the script
+      - name: Run the bash script 
         run: |
           if [ -f deploy.sh ]; then
-            echo "deploy.sh found."
             bash deploy.sh dev
           else
-            echo "deploy.sh not found. Skipping deployment."
+            echo "deploy.sh not found, exiting."
+            exit 1
           fi
